@@ -1,6 +1,6 @@
 
-xl_focus <- read_excel("NFOCUS18ST.XLS", skip=1)
 
+#' Function to replace empty column names with filler names
 fill_names <- function(df) {
   emp_cols <- which(names(df) == "")
   names(df)[emp_cols] <- paste0("X", seq_along(emp_cols))
@@ -8,13 +8,9 @@ fill_names <- function(df) {
     }
 
 
-# xl_focus <- xl_focus  %>% rm_fill_names
-
 ### add Focus. select states, gender from rows
 
-
 # load packages
-
 suppressPackageStartupMessages({
   library(plyr)
   library(dplyr)
@@ -34,7 +30,7 @@ detach("package:dplyr", unload = T)
 dev_mode()
 library(dplyr)
 
-
+# load data
 xl_focus <- read_excel("NFOCUS18ST.XLS", skip=1)
 
 # fix column names; instead, should use [number]-[number]
