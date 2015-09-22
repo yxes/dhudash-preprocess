@@ -74,7 +74,7 @@ shiftedCorr <- function(dataFrame1,dataFrame2,colName1="PctConfirmedBllGT10",col
 
 inputPanel({
  sliderInput("delta", "Delta:", 
-                min = 0, max = 7, value = 0, step=1)
+                min = 0, max = 4, value = 0, step=1)
 })
 
 renderLeaflet({
