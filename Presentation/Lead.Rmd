@@ -1,0 +1,136 @@
+---
+title: "Lead Times for Lead"
+author: "Stephen D. Wells"
+date: "September 22, 2015"
+output: ioslides_presentation
+runtime: shiny
+---
+
+## Shiny Presentation
+
+This R Markdown presentation is made interactive using Shiny. The viewers of the presentation can change the assumptions underlying what's presented and see the results immediately. 
+
+To learn more, see [Interactive Documents](http://rmarkdown.rstudio.com/authoring_shiny.html).
+
+## Slide with Interactive Plot
+
+```{r, echo=FALSE}
+inputPanel(
+  selectInput("n_breaks", label = "Number of bins:",
+              choices = c(10, 20, 35, 50), selected = 20),
+  
+  sliderInput("bw_adjust", label = "Bandwidth adjustment:",
+              min = 0.2, max = 2, value = 1, step = 0.2)
+)
+
+renderPlot({
+  hist(faithful$eruptions, probability = TRUE, breaks = as.numeric(input$n_breaks),
+       xlab = "Duration (minutes)", main = "Geyser eruption duration")
+  
+  dens <- density(faithful$eruptions, adjust = input$bw_adjust)
+  lines(dens, col = "blue")
+})
+```
+
+## Lead Times for Lead
+
+```{r, echo=FALSE}
+library(leaflet)
+library(maps)
+library(RColorBrewer)
+
+colors <- heat.colors(20, alpha=1)
+#colors <- rep("red",20)
+#colors <- topo.colors(20, alpha=1)
+colors <- substring(colors,1,7)
+
+
+lead=read.csv("./StateConfirmedByYear_1997_2013_03042015.csv")
+stateConversions=read.csv("StateConversions.csv")
+homicide_wide=read.csv("./homicide_wide.csv")
+
+shiftedCorr <- function(dataFrame1,dataFrame2,colName1="PctConfirmedBllGT10",colName2="Overall",yearDelta=0,stateConv) {
+  dataFrame1$State <- as.character(dataFrame1$State)
+  dataFrame2$State <- as.character(dataFrame2$State)
+  dataFrame1$Year=dataFrame1$Year+yearDelta
+  mergeDF<-merge(dataFrame1,dataFrame2,by=c('Year', 'State'))
+  mergeDF <- mergeDF[,c("Year","State",colName1,colName2)]
+  mergeDF <- na.omit(mergeDF)
+  stateLIST <- unique(mergeDF$State)
+  numStates <- length(stateLIST)
+  leadCrimeCorr <- NULL
+  for ( s in 1:numStates ) {
+    print(s)
+    theState <- stateLIST[s]
+    subDF <- mergeDF[ mergeDF$State == theState, ]
+    if ( nrow(subDF) > 0 ) {
+    subDF2 <- stateConv[ stateConv$State == tolower(theState), ]
+    subDF2$Corr <-cor(subDF[,colName1], subDF[,colName2], use="complete.obs")
+    leadCrimeCorr <- rbind(leadCrimeCorr,subDF2)
+  }
+  }
+  return(leadCrimeCorr)
+}
+
+inputPanel({
+ sliderInput("delta", "Delta:", 
+                min = 0, max = 7, value = 0, step=1)
+})
+
+renderLeaflet({
+  data = shiftedCorr(lead, homicide_wide, "PctConfirmedBllGT10","Overall",input$delta,stateConversions)
+  data$CorrInt <- ceiling(data$Corr*10 + 10)
+  data$Color <- colors[ data$CorrInt ]
+  mapStates = map("state", fill=TRUE, plot=TRUE)
+
+  state_names <- mapStates$names
+  
+ state_col <- rep("#FFFFFF", length(state_names))
+ names(state_col) <- state_names
+#  state_col["nebraska"] <- "#00FF00"
+#  names(state_col) <- NULL
+  
+  stateLIST <- as.character(data$OLDSTATE)
+  numStates <- length(stateLIST)
+
+  for ( i in 1:numStates ) {
+    theState <- stateLIST[i]
+    theColor <- data$Color[ data$OLDSTATE == theState ]
+    state_col[ theState ] <- theColor
+  }
+  names(state_col) <- NULL
+  print(state_col)
+  
+#  popup_col <- rep('', length(state_names))
+#  names(popup_col) <- state_names
+#  popup_col["nebraska"] <- "Nebraska"
+#  names(popup_col) <- NULL
+  
+  m = leaflet(data = mapStates) %>%
+        addTiles() %>%
+        addPolygons(fillColor = state_col, stroke = FALSE)
+  #                  popup=as.character(1:63))
+  
+  
+  #addPolygons(fillColor = state_col, stroke = FALSE)
+  
+  #addPolygons(fillColor = topo.colors(10, alpha = NULL), stroke = FALSE)
+        #print(heat.colors(50, alpha = NULL))
+        
+  return(m)
+})
+```
+
+## Slide with Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## Slide with R Code and Output
+
+```{r}
+summary(cars)
+```
+
+
