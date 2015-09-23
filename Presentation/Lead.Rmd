@@ -1,6 +1,6 @@
 ---
 title: "Lead Times for Lead"
-author: "Stephen D. Wells"
+author: "Adam Thomas, Nabil Abdurehman, Joe Maisog, David Greene, Steve Wells"
 date: "September 22, 2015"
 output: ioslides_presentation
 runtime: shiny
@@ -39,15 +39,26 @@ library(leaflet)
 library(maps)
 library(RColorBrewer)
 
-colors <- heat.colors(20, alpha=1)
+#colors <- heat.colors(20)
+# First create color scale.
+    #breaks    <- seq(-1,1,0.1)
+    #numBreaks <- length(breaks)
+
+    colors <- rep("",20)
+    for ( i in 1:20 ) {
+        redVal   <- (i-1)/19
+        blueVal  <- 1 - redVal
+        greenVal <- 0
+        colors[i]   <- rgb(redVal,greenVal,blueVal)
+    }
 #colors <- rep("red",20)
 #colors <- topo.colors(20, alpha=1)
-colors <- substring(colors,1,7)
-
+#colors <- substring(colors,1,7)
 
 lead=read.csv("./StateConfirmedByYear_1997_2013_03042015.csv")
 stateConversions=read.csv("StateConversions.csv")
 homicide_wide=read.csv("./homicide_wide.csv")
+suicide_wide=read.csv("./suicide_wide.csv")
 
 shiftedCorr <- function(dataFrame1,dataFrame2,colName1="PctConfirmedBllGT10",colName2="Overall",yearDelta=0,stateConv) {
   dataFrame1$State <- as.character(dataFrame1$State)
@@ -60,7 +71,7 @@ shiftedCorr <- function(dataFrame1,dataFrame2,colName1="PctConfirmedBllGT10",col
   numStates <- length(stateLIST)
   leadCrimeCorr <- NULL
   for ( s in 1:numStates ) {
-    print(s)
+#    print(s)
     theState <- stateLIST[s]
     subDF <- mergeDF[ mergeDF$State == theState, ]
     if ( nrow(subDF) > 0 ) {
@@ -73,12 +84,23 @@ shiftedCorr <- function(dataFrame1,dataFrame2,colName1="PctConfirmedBllGT10",col
 }
 
 inputPanel({
+  radioButtons("datasource", "behavior",
+             c("Homicide" = "homicide",
+               "Suicide" = "suicide"))
+},{
  sliderInput("delta", "Delta:", 
                 min = 0, max = 4, value = 0, step=1)
 })
 
 renderLeaflet({
-  data = shiftedCorr(lead, homicide_wide, "PctConfirmedBllGT10","Overall",input$delta,stateConversions)
+  datasource <- NULL
+  if (input$datasource == "homicide") {
+    datasource = homicide_wide
+  }else if (input$datasource == "suicide") {
+    datasource = suicide_wide
+  }
+  
+  data = shiftedCorr(lead, datasource, "PctConfirmedBllGT10","Overall",input$delta,stateConversions)
   data$CorrInt <- ceiling(data$Corr*10 + 10)
   data$Color <- colors[ data$CorrInt ]
   mapStates = map("state", fill=TRUE, plot=TRUE)
@@ -93,22 +115,26 @@ renderLeaflet({
   stateLIST <- as.character(data$OLDSTATE)
   numStates <- length(stateLIST)
 
+  popup_col <- rep('', length(state_names))
+  names(popup_col) <- state_names
+  
   for ( i in 1:numStates ) {
     theState <- stateLIST[i]
     theColor <- data$Color[ data$OLDSTATE == theState ]
     state_col[ theState ] <- theColor
+    popup_col[ theState ] <- paste("Correlation:", data$Corr[ data$OLDSTATE == theState ])
   }
   names(state_col) <- NULL
-  print(state_col)
+  #print(state_col)
   
-#  popup_col <- rep('', length(state_names))
-#  names(popup_col) <- state_names
+
 #  popup_col["nebraska"] <- "Nebraska"
-#  names(popup_col) <- NULL
+  names(popup_col) <- NULL
   
   m = leaflet(data = mapStates) %>%
         addTiles() %>%
-        addPolygons(fillColor = state_col, stroke = FALSE)
+        addPolygons(fillColor = state_col, stroke = FALSE,
+                    popup=popup_col)
   #                  popup=as.character(1:63))
   
   
