@@ -7,7 +7,7 @@
 #'
 #' @param df
 #' @importFrom stringr str_detect
-#' @importFrom magrittr `%>%`
+#' @importFrom magrittr %>%
 #' @export
 fix_col_names <- function(df) {
 
@@ -58,7 +58,7 @@ add_gender <- function(df) {
 #'
 #' @importFrom dplyr mutate select
 #' @importFrom stringr str_detect
-#' @importFrom magrittr `%>%`
+#' @importFrom magrittr %>%
 #'
 #' @param df a dataframe
 #' @export
@@ -76,7 +76,7 @@ add_states <- function(df) {
 #' @importFrom dplyr mutate select
 #' @importFrom stringr str_sub str_replace_all
 #' @importFrom tidyr fill
-#' @importFrom magrittr `%>%`
+#' @importFrom magrittr %>%
 #'
 #' @param df a dataframe
 #'
@@ -132,7 +132,7 @@ add_focus_name <- function(df) {
 #'
 #' @importFrom stringr str_detect
 #' @importFrom tidyr gather_ separate extract_numeric
-#' @importFrom magrittr `%>%`
+#' @importFrom magrittr %>%
 #' @importFrom dplyr mutate
 #'
 #' @export
