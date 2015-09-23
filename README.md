@@ -19,9 +19,11 @@ In brief, we are working on producing:
 The ftp site linked to above has data available for all fifty states. However, 
 the formatting is difficult to use, due to several issues (e.g., differences in 
 alignment, etc). And each file has data for virtually all fifty states, on 
-along with 
-Since there is such data for numerous health conditions, for 
-all fifty states, there is a need to be able to render it in usable form.
+along with many different variables concerning demographics.
+
+Since each sheet contains statistics for a different health conditions, 
+then overall there's plenty of data available for which a subset could be 
+extracted and combined with, or compared to, other health statistics.
 
 
 
