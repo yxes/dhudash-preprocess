@@ -1,7 +1,7 @@
 
 #' Removes Helper Columns
 #'
-#' @importFrom dplyr select ends_with
+#' @importFrom dplyr select
 #' @importFrom magrittr `%>%`
 #'
 clean_cols <- function(df) {
