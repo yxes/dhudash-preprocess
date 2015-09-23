@@ -56,7 +56,7 @@ add_gender <- function(df) {
 #'
 #' Assumes there is a column named "Objective"
 #'
-#' @importFrom dplyr mutate select everything
+#' @importFrom dplyr mutate select
 #' @importFrom stringr str_detect
 #' @importFrom magrittr `%>%`
 #'
@@ -73,7 +73,7 @@ add_states <- function(df) {
 #'
 #' NB: assume that there is a State_row column present in the dataframe
 #'
-#' @importFrom dplyr mutate select everything
+#' @importFrom dplyr mutate select
 #' @importFrom stringr str_sub str_replace_all
 #' @importFrom tidyr fill
 #' @importFrom magrittr `%>%`
