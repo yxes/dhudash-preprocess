@@ -1,0 +1,8 @@
+Package: leadteam
+Title: Cleans Up CDC "Wonder" Health Data
+Version: 0.1.0
+Authors@R: person("Nabil", "Abdurehman", email = "nabilabdu@gatech.edu", role = c("aut", "cre"))
+Description: CDC's "Wonder" health data is in xls files, which is involved to parse. This package simplifies the extraction and manipulation of the data into a much more usable format.
+Depends: R (>= 3.1.2)
+License: What license is it under?
+LazyData: true

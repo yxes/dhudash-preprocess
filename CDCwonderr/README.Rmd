@@ -1,0 +1,42 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+
+## Introduction
+
+
+
+
+
+## Example
+
+
+```{r, eval=FALSE}
+
+
+
+
+```
+
+
+
+
+## Acknowledgements
+
+Thanks to Sean Davis for help with the idea and R package development, and 
+Steve Wells for help with regex expressions.
+
+
