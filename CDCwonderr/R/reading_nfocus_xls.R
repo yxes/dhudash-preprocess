@@ -5,6 +5,9 @@
 #'
 #' Removes empty columns, and renames the columns with non-unique names.
 #'
+#' NB: Not sure what is represented by the values in the rows with state names.
+#'  Here those values are denoted by "rounded."
+#'
 #' @param df
 #' @importFrom stringr str_detect
 #' @importFrom magrittr %>%
@@ -34,7 +37,7 @@ fix_col_names <- function(df) {
 #' @param num_rows number of rows to remove from end
 #' @export
 rm_tail <- function(df, num_rows = 6) {
-  last_rows <- seq(to = nrow(df), by = 1, length.out = num_rows)
+  last_rows <- tail( seq_len(nrow(df)), n = num_rows )
   df[-last_rows, ]
 }
 
