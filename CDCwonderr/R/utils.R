@@ -1,6 +1,9 @@
 
 #' Removes Helper Columns
 #'
+#' The helper columns (as used in this package) have column names that end with
+#' "_row".
+#'
 #' @importFrom dplyr select
 #' @importFrom magrittr %>%
 #'
@@ -12,10 +15,8 @@ clean_cols <- function(df) {
 #'
 #' @importFrom stringr str_replace_all
 #' @importFrom magrittr %>%
+#' @return a dataframe, with no spaces in the column names
 #'
 rm_space_names <- function(df) {
-  set_names(., str_replace_all(names(.), " ", ""))
+  df %>% set_names(., str_replace_all(names(.), " ", ""))
 }
-
-
-

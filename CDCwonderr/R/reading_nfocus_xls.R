@@ -3,7 +3,7 @@
 
 #' Simplifies Working with columns in the xls files
 #'
-#' Removes empty columns, and renames the columns with non-unique names.
+#' Removes empty columns, and renames the columns that have non-unique names.
 #'
 #' NB: Not sure what is represented by the values in the rows with state names.
 #'  Here those values are denoted by "rounded."
@@ -28,7 +28,7 @@ fix_col_names <- function(df) {
 #' Remove the last lines of an excel sheet.
 #'
 #' This function aims to remove the documentation often contained included at
-#' at the tail end of excel document. Those last lines also
+#' at the tail end of excel documents. Those last lines also
 #' tend to have hyphens in the "Objective" column, which interferes with the
 #' heuristic used to generate a column for the name of the FOCUS that data
 #' corresponds to.
@@ -44,9 +44,17 @@ rm_tail <- function(df, num_rows = 6) {
 
 #' Identifies Gender-related rows
 #'
-#' by adding another column
+#' The nfocus datasets typically have several different demographic information
+#' for which there are health statistics (e.g., race, gender, etc.). This
+#' function can be used to identify which rows of the dataset contain data
+#' by gender.
+#'
+#' This function works by adding another column with \code{logical} values. A
+#' value of \code{TRUE} indicates the row has statistics for by gender, and
+#' \code{FALSE} signifies otherwise
 #'
 #' @param df a dataframe
+#' @export
 add_gender <- function(df) {
 
   mod_df <- df %>% mutate( gender_row = str_detect(Objective, "(Fe)?[Mm]ale") ) %>%
@@ -57,11 +65,12 @@ add_gender <- function(df) {
 
 #' Identify Rows Beginning State-related Section
 #'
-#' Assumes there is a column named "Objective"
+#' Assumes there is a column named "Objective".
 #'
 #' @importFrom dplyr mutate select
 #' @importFrom stringr str_detect
 #' @importFrom magrittr %>%
+#' @seealso add_gender add_focus
 #'
 #' @param df a dataframe
 #' @export
@@ -82,7 +91,7 @@ add_states <- function(df) {
 #' @importFrom magrittr %>%
 #'
 #' @param df a dataframe
-#'
+#' @seealso add_focus_name
 #' @export
 #'
 add_state_names <- function(df) {
@@ -101,6 +110,7 @@ add_state_names <- function(df) {
 #'
 #'
 #' @param a dataframe
+#' @seealso add_gender add_states
 #' @export
 add_focus <- function(df) {
 
@@ -115,7 +125,12 @@ add_focus <- function(df) {
 #'
 #' TODO: perhaps there can be a generalization to handle add_focus_name,
 #'  add_state_names
+#'
+#' @importFrom dplyr mutate select
+#' @importFrom tidyr fill
+#'
 #' @param df a dataframe
+#' @seealso add_state_names
 #' @export
 add_focus_name <- function(df) {
 
@@ -131,7 +146,6 @@ add_focus_name <- function(df) {
 }
 
 #' Form Columns for "Year" and "Percentages"
-#'
 #'
 #' @importFrom stringr str_detect
 #' @importFrom tidyr gather_ separate extract_numeric
