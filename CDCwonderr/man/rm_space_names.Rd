@@ -6,6 +6,9 @@
 \usage{
 rm_space_names(df)
 }
+\value{
+a dataframe, with no spaces in the column names
+}
 \description{
 Removes spaces in column names
 }

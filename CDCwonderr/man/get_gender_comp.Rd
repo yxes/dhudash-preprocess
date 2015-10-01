@@ -12,4 +12,7 @@ get_gender_comp(fname)
 \description{
 Obtain Health Conditions by Gender
 }
+\examples{
+mental <- get_gender_comp("../../jhuDash_pkg/raw_data/NFOCUS03ST.XLS")
+}
 

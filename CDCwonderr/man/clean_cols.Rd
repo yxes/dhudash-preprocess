@@ -7,6 +7,7 @@
 clean_cols(df)
 }
 \description{
-Removes Helper Columns
+The helper columns (as used in this package) have column names that end with
+"_row".
 }
 
