@@ -18,6 +18,16 @@ knitr::opts_chunk$set(
 
 The extra 'r' is for the language.
 
+## Installation
+
+To install this package, just run the following commands: 
+
+```{r}
+# install.packages("devtools") ; run this line if you don't have devtools
+install_github("yxes/jhudash-leadteam/CDCwonderr")
+```
+
+
 ## Motivation
 
 My team at the JHU DaSH wanted to correlate statistics regarding lead poisoning 
