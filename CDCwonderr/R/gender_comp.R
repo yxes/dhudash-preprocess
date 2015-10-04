@@ -20,7 +20,9 @@ get_gender_comp <- function(fname) {
     add_focus_name %>%
     add_states %>%
     add_state_names %>%
-    add_gender
+    add_gender %>%
+    filter(gender_row == TRUE) %>%
+    select(-gender_row)
 
   fin_cond <- mod_cond %>%
     form_years %>%

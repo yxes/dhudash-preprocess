@@ -20,3 +20,5 @@ clean_cols <- function(df) {
 rm_space_names <- function(df) {
   df %>% set_names(., str_replace_all(names(.), " ", ""))
 }
+
+compact <- function(x) x[which(names(x) != "")]

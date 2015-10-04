@@ -14,9 +14,7 @@
 #' @export
 fix_col_names <- function(df) {
 
-  df <- rm_space_names(df)
-  empty_cols <- which(names(df) == "")
-  df <- df[, -empty_cols]
+  df <- df %>% rm_space_names %>% compact
 
   year_cols <- names(df) %>% str_detect("[0-9]+") %>% which
   names(df)[-1] <- rep(names(df)[year_cols], each=3) %>%
@@ -54,6 +52,7 @@ rm_tail <- function(df, num_rows = 6) {
 #' \code{FALSE} signifies otherwise
 #'
 #' @param df a dataframe
+#' @importFrom dplyr mutate select filter
 #' @export
 add_gender <- function(df) {
 
