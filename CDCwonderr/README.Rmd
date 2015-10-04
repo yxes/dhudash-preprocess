@@ -46,10 +46,11 @@ useful to others. For our end product, see the Shiny presentation in this repo.
 ```{r}
 suppressPackageStartupMessages({
   library(devtools)
-  library(dplyr, warn=F)
   library(readxl)
   library(readxl)
 })  
+dev_mode()
+library(dplyr, warn = F)
 
 # all the xls files have the first line data-free
 suici <- read_excel("data-raw/NFOCUS18ST.XLS", skip = 1)
@@ -70,14 +71,19 @@ suici2 %>% glimpse
 ```
 
 The "Objective" column contains state names, names of demographic variables, and 
-health conditions as well. A combination of "add_*" and "add_*_names" functions 
+health conditions as well. A combination of "add_FIELD" and "add_FIELD_names" functions 
 can be used to add an entire column with values corresponding to the the 
 respective row. For example, 
 
 ```{r}
 suici2 %>% 
+  add_focus %>% 
+  add_focus_name %>%
   add_states %>% 
   add_state_names %>% 
+  add_gender %>% 
+  filter(gender_row == TRUE) %>% 
+  select(-gender_row) %>% 
   glimpse
 ```
 
@@ -90,11 +96,12 @@ the get_gender_comp function.
 
 ```{r}
 homicides <- get_gender_comp("data-raw/NFOCUS18ST.XLS")
-homicides %>% glimpse
+homicides %>% 
+  rename(Gender = Objective) %>% 
+  mutate(Gender = str_replace_all(Gender, " ", "")) %>% 
+  glimpse
 ```
 
-(Sidenote: it seems, as of this writing, that there is some bug with dplyr, 
-although I haven't isolated the reason yet...)
 
 ## Acknowledgements
 
