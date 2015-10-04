@@ -22,7 +22,7 @@ The extra 'r' is for the language.
 
 To install this package, just run the following commands: 
 
-```{r}
+```{r, eval = FALSE}
 # install.packages("devtools") ; run this line if you don't have devtools
 install_github("yxes/jhudash-leadteam/CDCwonderr")
 ```

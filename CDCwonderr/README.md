@@ -4,6 +4,16 @@ CDCwonderr
 
 The extra 'r' is for the language.
 
+Installation
+------------
+
+To install this package, just run the following commands:
+
+``` r
+# install.packages("devtools") ; run this line if you don't have devtools
+install_github("yxes/jhudash-leadteam/CDCwonderr")
+```
+
 Motivation
 ----------
 
