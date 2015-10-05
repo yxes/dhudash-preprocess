@@ -219,4 +219,4 @@ homicides %>%
 Acknowledgements
 ----------------
 
-Thanks to [Sean Davis](http://watson.nci.nih.gov/~sdavis/) for help with the idea and R package development, and [Steve Wells](http://stevenwells.com/) for help with regex expressions.
+Thanks to [Sean Davis](http://watson.nci.nih.gov/~sdavis/) for help with the idea and R package development, and [Steve Wells](http://stephendwells.com/) for help with regex expressions.
