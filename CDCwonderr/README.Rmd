@@ -35,18 +35,13 @@ with mental health problems or general "malfeasance". What we settled upon was
 to use statistics of suicides/homicides committed, with [this dataset](ftp://ftp.cdc.gov/pub/Health_Statistics/NCHS/Datasets/DATA2010/State_data_tables/). 
 
 However, we found that there were discrepancies between some xls and 
-csv files that were supposed to contain the same data. Moreover, we encountered 
-some difficulties in interpreting/comparing between some of the demographics included, 
-and not all of those demographic categories were included for each focus condition 
-of a spreadsheet, or even between spreadsheets. 
+csv files that were supposed to contain the same data. Moreover, we encountered some difficulties in interpreting/comparing between some of the demographics included, and not all of those demographic categories were included for each focus condition of a spreadsheet, or even between spreadsheets. 
 
 To achieve our end goal, then, we needed to: 
 - parse the data from the original xls files to preserve data integrity/quality 
 - be able to select certain demographics for which we could extract statistics of interest
 
-In the end, we managed to write some functions to simultaneously accomplish these 
-goals, and decided to bundle them up in a package so that perhaps it would be 
-useful to others. For our end product, see the Shiny presentation in this repo.
+In the end, we managed to write some functions to simultaneously accomplish these goals, and decided to bundle them up in a package so that perhaps it would be useful to others. For our end product, see the Shiny presentation in this repo.
 
 
 ## Example
@@ -68,11 +63,7 @@ suici %>% glimpse
 
 ```
 
-Here, we see that there are a few difficulties. One is that column names are not 
-all distinct. Another is that some have empty spaces (e.g., the "Objective" column);
-some other files even have empty columns (with footnote numbers in the excel file, 
-which probably aren't useful in an analysis). Also (and you can confirm this yourself), the end of the file doesn't have data we're interested in. To fix these problems, 
-we can use the following functions: 
+Here, we see that there are a few difficulties. One is that column names are not all distinct. Another is that some have empty spaces (e.g., the "Objective" column);some other files even have empty columns (with footnote numbers in the excel file, which probably aren't useful in an analysis). Also (and you can confirm this yourself), the end of the file doesn't have data we're interested in. To fix these problems, we can use the following functions: 
 
 ```{r}
 load_all(".") # load functions in the package
@@ -80,10 +71,7 @@ suici2 <- suici %>% fix_col_names %>% rm_tail
 suici2 %>% glimpse
 ```
 
-The "Objective" column contains state names, names of demographic variables, and 
-health conditions as well. A combination of "add_FIELD" and "add_FIELD_names" functions 
-can be used to add an entire column with values corresponding to the the 
-respective row. For example, 
+The `Objective` column contains state names, names of demographic variables, and health conditions as well. A combination of `add_FIELD` and `add_FIELD_names` functions can be used to add an entire column with values corresponding to the the respective row. For example, 
 
 ```{r}
 suici2 %>% 
@@ -97,12 +85,9 @@ suici2 %>%
   glimpse
 ```
 
-should indicate that the manipulations added a column which contains the state name
-corresponding to the statistics in each row. 
+should indicate that the manipulations added a column which contains the state namecorresponding to the statistics in each row. 
 
-For our purposes, we wrapped up all the functionality to transform a string with 
-the filename, to a tidy dataset ready to incorporate into our analysis, with 
-the get_gender_comp function.
+For our purposes, we wrapped up all the functionality to transform a string with the filename, to a tidy dataset ready to incorporate into our analysis, with the `get_gender_comp` function.
 
 ```{r}
 homicides <- get_gender_comp("data-raw/NFOCUS18ST.XLS")
@@ -115,6 +100,6 @@ homicides %>%
 
 ## Acknowledgements
 
-Thanks to [Sean Davis](http://watson.nci.nih.gov/~sdavis/) for help with the idea and R package development, and [Steve Wells](http://stevenwells.com/) for help with regex expressions.
+Thanks to [Sean Davis](http://watson.nci.nih.gov/~sdavis/) for help with the idea and R package development, and my group, [Steve Wells](http://stevenwells.com/) for help with regex expressions, and the others in the group (Adam, David, and Joe) for the support!
 
 

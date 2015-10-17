@@ -1,34 +1,50 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+---
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-CDCwonderr
-==========
+
+
+
+# CDCwonderr
 
 The extra 'r' is for the language.
 
-Installation
-------------
+## Installation
 
-To install this package, just run the following commands:
+To install this package, just run the following commands: 
 
-``` r
+
+```r
 # install.packages("devtools") ; run this line if you don't have devtools
 install_github("yxes/jhudash-leadteam/CDCwonderr")
 ```
 
-Motivation
-----------
 
-My team at the JHU DaSH wanted to correlate statistics regarding lead poisoning with mental health problems or general "malfeasance". What we settled upon was to use statistics of suicides/homicides committed, with [this dataset](ftp://ftp.cdc.gov/pub/Health_Statistics/NCHS/Datasets/DATA2010/State_data_tables/).
+## Motivation
 
-However, we found that there were discrepancies between some xls and csv files that were supposed to contain the same data. Moreover, we encountered some difficulties in interpreting/comparing between some of the demographics included, and not all of those demographic categories were included for each focus condition of a spreadsheet, or even between spreadsheets.
+My team at the JHU DaSH wanted to correlate statistics regarding lead poisoning 
+with mental health problems or general "malfeasance". What we settled upon was 
+to use statistics of suicides/homicides committed, with [this dataset](ftp://ftp.cdc.gov/pub/Health_Statistics/NCHS/Datasets/DATA2010/State_data_tables/). 
 
-To achieve our end goal, then, we needed to: - parse the data from the original xls files to preserve data integrity/quality - be able to select certain demographics for which we could extract statistics of interest
+However, we found that there were discrepancies between some xls and 
+csv files that were supposed to contain the same data. Moreover, we encountered some difficulties in interpreting/comparing between some of the demographics included, and not all of those demographic categories were included for each focus condition of a spreadsheet, or even between spreadsheets. 
+
+To achieve our end goal, then, we needed to: 
+- parse the data from the original xls files to preserve data integrity/quality 
+- be able to select certain demographics for which we could extract statistics of interest
 
 In the end, we managed to write some functions to simultaneously accomplish these goals, and decided to bundle them up in a package so that perhaps it would be useful to others. For our end product, see the Shiny presentation in this repo.
 
-Example
--------
 
-``` r
+## Example
+
+
+
+
+```r
 suppressPackageStartupMessages({
   library(devtools)
   library(readxl)
@@ -83,18 +99,12 @@ suici %>% glimpse
 #> $ error                                                   (chr) "  ", ...
 ```
 
-Here, we see that there are a few difficulties. One is that column names are not all distinct. Another is that some have empty spaces (e.g., the "Objective" column); some other files even have empty columns (with footnote numbers in the excel file, which probably aren't useful in an analysis). Also (and you can confirm this yourself), the end of the file doesn't have data we're interested in. To fix these problems, we can use the following functions:
+Here, we see that there are a few difficulties. One is that column names are not all distinct. Another is that some have empty spaces (e.g., the "Objective" column);some other files even have empty columns (with footnote numbers in the excel file, which probably aren't useful in an analysis). Also (and you can confirm this yourself), the end of the file doesn't have data we're interested in. To fix these problems, we can use the following functions: 
 
-``` r
+
+```r
 load_all(".") # load functions in the package
 #> Loading CDCwonderr
-#> Warning: package 'stringr' was built under R version 3.1.3
-#> 
-#> Attaching package: 'tidyr'
-#> 
-#> The following object is masked from 'package:magrittr':
-#> 
-#>     extract
 suici2 <- suici %>% fix_col_names %>% rm_tail
 suici2 %>% glimpse
 #> Observations: 1,857
@@ -135,9 +145,10 @@ suici2 %>% glimpse
 #> $ 2008error   (chr) "  ", NA, NA, ".", NA, ".", ".", ".", ".", ".", "....
 ```
 
-The "Objective" column contains state names, names of demographic variables, and health conditions as well. A combination of "add\_FIELD" and "add\_FIELD\_names" functions can be used to add an entire column with values corresponding to the the respective row. For example,
+The `Objective` column contains state names, names of demographic variables, and health conditions as well. A combination of `add_FIELD` and `add_FIELD_names` functions can be used to add an entire column with values corresponding to the the respective row. For example, 
 
-``` r
+
+```r
 suici2 %>% 
   add_focus %>% 
   add_focus_name %>%
@@ -189,11 +200,12 @@ suici2 %>%
 #> $ 2008error   (chr) ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ...
 ```
 
-should indicate that the manipulations added a column which contains the state name corresponding to the statistics in each row.
+should indicate that the manipulations added a column which contains the state namecorresponding to the statistics in each row. 
 
-For our purposes, we wrapped up all the functionality to transform a string with the filename, to a tidy dataset ready to incorporate into our analysis, with the get\_gender\_comp function.
+For our purposes, we wrapped up all the functionality to transform a string with the filename, to a tidy dataset ready to incorporate into our analysis, with the `get_gender_comp` function.
 
-``` r
+
+```r
 homicides <- get_gender_comp("data-raw/NFOCUS18ST.XLS")
 #> DEFINEDNAME: 20 00 00 01 0b 00 00 00 01 00 00 00 00 00 00 07 3b 00 00 01 00 01 00 00 00 ff 00 
 #> DEFINEDNAME: 20 00 00 01 0b 00 00 00 01 00 00 00 00 00 00 07 3b 00 00 01 00 01 00 00 00 ff 00 
@@ -216,7 +228,9 @@ homicides %>%
 #> $ rounded    (dbl) 4.1, 4.8, 4.1, 4.3, 4.0, 4.1, 4.0, 3.9, 3.5, 2.3, 3...
 ```
 
-Acknowledgements
-----------------
 
-Thanks to [Sean Davis](http://watson.nci.nih.gov/~sdavis/) for help with the idea and R package development, and [Steve Wells](http://stevenwells.com/) for help with regex expressions.
+## Acknowledgements
+
+Thanks to [Sean Davis](http://watson.nci.nih.gov/~sdavis/) for help with the idea and R package development, and my group, [Steve Wells](http://stevenwells.com/) for help with regex expressions, and the others in the group (Adam, David, and Joe) for the support!
+
+
