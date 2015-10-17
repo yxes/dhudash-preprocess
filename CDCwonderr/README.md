@@ -51,7 +51,7 @@ suppressPackageStartupMessages({
   library(readxl)
 })  
 dev_mode()
-#> Dev mode: OFF
+#> Dev mode: ON
 library(dplyr, warn = F)
 
 # all the xls files have the first line data-free
